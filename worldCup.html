@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>이상형월드컵</title>
+    <!-- jquery CDN Link : 가장 위에 있어야 함! -->
+    <script
+      src="https://code.jquery.com/jquery-3.7.1.js"
+      integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
+      crossorigin="anonymous"
+    ></script>
+
+    <!-- bootstrap -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
+      integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N"
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct"
+      crossorigin="anonymous"
+    ></script>
+
+    <!-- 내가 만든 외부 스타일시트 -->
+    <link rel="stylesheet" type="text/css" href="worldCup_style.css" />
+    <meta charset="utf-8" />
+    <style>
+      img {
+        width: 500px;
+        height: 500px;
+      }
+    </style>
+  </head>
+  <body>
+    <center>
+      <h1>이상형 월드컵</h1>
+      <p id="cal"></p>
+      <img id="image" onclick="change(0)" />
+      <img id="images" onclick="change(1)" />
+
+      <script>
+        text = "";
+        var images = [];
+        var sImages = [];
+
+        var cnt = 0;
+        var num = 0;
+        var sNum = 0;
+        var cnt2 = 0;
+
+        function show() {
+          for (i = 0; i < 16; i++) {
+            images[i] = i + 1 + ".jpg";
+          }
+          images.sort(function (a, b) {
+            return 0.5 - Math.random();
+          });
+          showImg(num);
+        }
+
+        show(0);
+
+        function showImg(num) {
+          document.getElementById("image").src = images[num];
+          document.getElementById("images").src = images[num + 1];
+          cnt2++;
+        }
+
+        function change(n) {
+          if (cnt2 < 20) {
+            cnt++;
+            if (n == 0) sImages[sNum++] = images[num];
+            else sImages[sNum++] = images[num + 1];
+            num += 2;
+
+            showImg(num);
+
+            if (cnt == images.length / 2) {
+              for (i = 0; i < sImages.length; i++) {
+                images[i] = sImages[i];
+                sImages[i] = null;
+              }
+              images.splice(cnt);
+              cnt = 0;
+              num = 0;
+              sNum = 0;
+              showImg(num);
+            }
+          }
+        }
+
+        document.getElementById("cal").innerHTML = text;
+      </script>
+    </center>
+  </body>
+</html>

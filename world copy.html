@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>이상형월드컵</title>
+    <!-- jQuery CDN Link: must be at the top -->
+    <script
+      src="https://code.jquery.com/jquery-3.7.1.js"
+      integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
+      crossorigin="anonymous"
+    ></script>
+
+    <!-- Bootstrap -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
+      integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N"
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct"
+      crossorigin="anonymous"
+    ></script>
+
+    <!-- External Stylesheet -->
+    <link rel="stylesheet" type="text/css" href="worldCup_style.css" />
+    <meta charset="utf-8" />
+    <style>
+      img {
+        width: 320px;
+        height: 400px;
+      }
+      #opening,
+      #description,
+      #game {
+        display: none;
+      }
+      #game {
+        display: block;
+      }
+      #game,
+      #winnerTemp,
+      #winners {
+        display: none; /* 게임, 현재 우승자, 모든 우승자 섹션을 숨김 */
+      }
+    </style>
+  </head>
+  <body>
+    <center>
+      <div id="opening">
+        <div class="py-3"><img id="firstpage" src="firstpage.jpg" /><br /></div>
+        <button id="nextBtn" onclick="showDescription()">Next</button>
+      </div>
+      <div id="description" style="display: none">
+        <h1 class="pt-3">당신의 IDOL</h1>
+        <div class="d-flex justify-content-center">
+          <img src="sample_1.jpg" class="sample px-3" onclick="change(0)" />
+          <h1 class="d-flex align-items-center">vs</h1>
+          <img src="sample_2.jpg" class="sample px-3" onclick="change(1)" />
+        </div>
+        <h4 pt-2>각 포지션 별 맞다이 진행!</h4>
+        소설으로 쓰려해도 설정과다로 욕먹을 Amazing할 걸그룹 멤버를 Pick Pick<br />
+        뉴진스 밟을 수 있죠?<br />
+        <button onclick="startGame()">Continue to Game</button>
+      </div>
+      <div id="game">
+        <div id="timerContainer">
+          <div id="timer">10</div>
+          <!-- 타이머 텍스트 -->
+        </div>
+        <div class="d-flex justify-content-center align-items-center pt-3">
+          <h1 class="font-weight-bold pr-3">Pick your</h1>
+          <h1 id="gameCountInfo" class="font-weight-bold"></h1>
+        </div>
+        <p id="roundInfo"></p>
+        <div class="d-flex justify-content-center pt-3">
+          <img id="image" class="px-3" onclick="change(0)" />
+          <h1 class="d-flex align-items-center">vs</h1>
+          <img id="images" class="px-3" onclick="change(1)" />
+        </div>
+      </div>
+      <div id="winnerTemp">
+        <h1 id="updateRoleInfo" class="pt-5"></h1>
+        <img
+          class="pt-3"
+          id="currentWinner"
+          style="width: 320px; height: 400px"
+        />
+      </div>
+      <div id="winners">
+        <h1 class="pt-3">이 멤버면 뉴진스 밟을 수 있죠?</h1>
+        <div class="d-flex justify-content-between">
+          <h4>센터</h4>
+          <h4>리더</h4>
+          <h4>보컬</h4>
+          <h4>비주얼</h4>
+          <h4>댄서</h4>
+        </div>
+        <div class="pt-3" id="winnerList"></div>
+      </div>
+    </center>
+    <script>
+      var images = [];
+      var sImages = [];
+      var cnt = 0,
+        num = 0,
+        sNum = 0,
+        cnt2 = 0,
+        round = 1;
+      var gameCount = 0;
+      var winners = [];
+      var timer;
+      var timerCount;
+
+      $(document).ready(function () {
+        $("#opening").show();
+        $("#winners").hide();
+        $("#winnerTemp").hide();
+      });
+
+      function showDescription() {
+        $("#opening").hide();
+        $("#description").show();
+      }
+
+      function startGame() {
+        $("#description").hide();
+        $("#game").show();
+        initGame();
+      }
+
+      function initGame() {
+        images = [];
+        sImages = [];
+        cnt = 0;
+        num = 0;
+        sNum = 0;
+        round = 1;
+        for (i = 0; i < 32; i++) {
+          images[i] = i + 1 + ".jpg";
+        }
+        images.sort(function (a, b) {
+          return 0.5 - Math.random();
+        });
+        showImg(num);
+        updateRoundInfo();
+        updategameCountInfo();
+        startTimer();
+        updateRoleInfo();
+      }
+
+      function startTimer() {
+        timerCount = 10;
+        $("#timer").text(timerCount);
+        timer = setInterval(function () {
+          timerCount--;
+          $("#timer").text(timerCount);
+          if (timerCount <= 0) {
+            clearInterval(timer);
+            handleTimeout(); // 시간 초과 시 호출될 함수
+            badimageIndex++;
+          }
+        }, 1000);
+      }
+
+      function updategameCountInfo() {
+        let roleArr = ["Center", "Leader", "Visual", "Vocal", "Dancer"];
+        let roleArr1 = ["센터", "보컬", "댄스", "리더", "비주얼"];
+        $("#gameCountInfo").text(roleArr[gameCount] + " idol");
+      }
+
+      function updateRoundInfo() {
+        $("#roundInfo").text("Round: " + 32 / Math.pow(2, round - 1) + "강");
+      }
+
+      function updateRoleInfo() {
+        let roleArr = ["Center", "Leader", "Visual", "Vocal", "Dancer"];
+        let roleArr1 = ["센터", "보컬", "댄스", "리더", "비주얼"];
+        $("#updateRoleInfo").text("당신의 1픽 " + roleArr[gameCount]);
+      }
+
+      function showImg(num) {
+        if (images.length > 1) {
+          $("#image").attr("src", images[num]);
+          $("#images").attr("src", images[num + 1]);
+        }
+      }
+
+      function change(n) {
+        clearInterval(timer);
+        cnt++;
+        sImages[sNum++] = images[n == 0 ? num : num + 1];
+        num += 2;
+
+        if (cnt >= images.length / 2) {
+          images = sImages.slice(0);
+          sImages = [];
+          cnt = 0;
+          num = 0;
+          sNum = 0;
+          round++;
+          updateRoundInfo();
+        }
+
+        if (images.length > 1) {
+          showImg(num);
+          startTimer(); // Restart the timer for the next round
+        } else {
+          winners.push(images[0]);
+          showCurrentWinner(images[0]);
+          if (gameCount < 4) {
+            setTimeout(function () {
+              gameCount++;
+              initGame();
+              $("#winnerTemp").hide();
+              $("#game").show();
+            }, 2000);
+          } else {
+            setTimeout(function () {
+              displayWinners();
+            }, 2000);
+          }
+        }
+      }
+      var badimageIndex = 0;
+      function handleTimeout() {
+        let badimages = [
+          "bad_1.jpg",
+          "bad_2.jpg",
+          "bad_3.jpg",
+          "bad_4.jpg",
+          "bad_5.jpg",
+        ];
+        winners.push(badimages[badimageIndex]); // "badimage.jpg" 경로는 실제 이미지 경로로 바꿔주세요.
+        showCurrentWinner(badimages[badimageIndex]); // 타임아웃 시 "badimage.jpg" 보여주기
+
+        if (gameCount < 4) {
+          setTimeout(function () {
+            gameCount++;
+            initGame();
+            $("#winnerTemp").hide();
+            $("#game").show();
+          }, 2000);
+        } else {
+          setTimeout(function () {
+            displayWinners();
+          }, 2000);
+        }
+      }
+
+      function showCurrentWinner(winner) {
+        $("#game").hide();
+        $("#currentWinner").attr("src", winner);
+        $("#winnerTemp").show();
+      }
+
+      function displayWinners() {
+        $("#winnerTemp").hide();
+        $("#game").hide();
+        winners.forEach(function (winner, index) {
+          $("#winnerList").append(
+            '<img src="' +
+              winner +
+              '" style="margin: 5px;width:210px;height:400px;">'
+          );
+        });
+        $("#winners").show();
+      }
+    </script>
+  </body>
+</html>

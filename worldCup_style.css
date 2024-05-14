@@ -1,0 +1,72 @@
+title {
+  font-weight: bold;
+}
+body {
+  background-color: plum;
+}
+/* #timer {
+  height: 20px;
+  font-size: 100px;
+  font-weight: bold;
+} */
+#firstpage {
+  width: 430px;
+  height: 550px;
+  border-width: 2px;
+  border-style: solid;
+  border-color: #ffffff;
+}
+#timerContainer {
+  position: absolute; /* 부모 요소를 기준으로 절대 위치 */
+  right: 240px; /* 오른쪽 상단에 위치 */
+  top: 60px; /* 상단에서 20px 아래 */
+  width: 100px; /* 시계 이미지의 크기에 맞추어 조정 */
+  height: 100px; /* 시계 이미지의 크기에 맞추어 조정 */
+  background-image: url("clock.jpg"); /* 시계 이미지 URL */
+  background-size: cover; /* 배경 이미지 크기 조정 */
+  display: flex; /* Flexbox를 사용하여 내용을 중앙에 배치 */
+  justify-content: center; /* 수평 중앙 정렬 */
+  align-items: center; /* 수직 중앙 정렬 */
+  color: white; /* 타이머 숫자 색상 */
+  font-size: 80px; /* 타이머 숫자 크기 */
+  font-weight: bold; /* 글자 굵기 */
+}
+#nextBtn {
+  width: 100px;
+  height: 50px;
+  position: absolute; /* 절대 위치 */
+  right: 150px; /* 오른쪽 끝에 위치 */
+  top: 90%; /* 상단에서 50%의 위치, 중간 정도 */
+  transform: translateY(-50%); /* Y축 기준으로 -50% 이동해 가운데 정렬 */
+  /* background-image: url("arrow_right.png"); 화살표 이미지 사용 */
+  background-size: cover; /* 배경 사이즈 커버로 설정 */
+}
+
+.sample {
+  width: 240px;
+  height: 300px;
+}
+
+#gameStart {
+  height: 40px;
+  width: 100px;
+  margin-right: 30px;
+  position: absolute;
+  bottom: 40px;
+}
+
+#text1 {
+  font-size: 30px;
+  font-weight: bold;
+}
+#text2 {
+  font-size: 17px;
+}
+#text3 {
+  font-size: 17px;
+}
+
+#fight {
+  width: 65px;
+  height: 65px;
+}
